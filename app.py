@@ -4,11 +4,11 @@ from predictor import calculate_prediction
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def home():
     return render_template("index.html")
 
-@app.route("/data")
+@app.route('/data')
 def data():
     multipliers = get_multipliers()
     prediction = calculate_prediction(multipliers)
