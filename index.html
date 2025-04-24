@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BERTRA_AVIATOR</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 30px; background: #f4f4f4; }
+        .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 0 10px #ccc; display: inline-block; }
+        .prediction { margin-top: 20px; font-size: 18px; color: #333; }
+        .graph { width: 100%; max-width: 500px; margin: 20px auto; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>BERTRA_AVIATOR</h1>
+        <h2>Ibikubo bya vuba</h2>
+        <ul id="multiplierList"></ul>
+        <div class="prediction" id="predictionBox">Loading prediction...</div>
+        <canvas id="chart" class="graph"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function fetchData() {
+            const res = await fetch("/data");
+            const json = await res.json();
+            const list = document.getElementById("multiplierList");
+            const predictionBox = document.getElementById("predictionBox");
+            list.innerHTML = "";
+            json.multipliers.forEach(m => {
+                const li = document.createElement("li");
+                li.textContent = m;
+                if (parseFloat(m.replace("x", "")) >= 10) {
+                    li.style.color = "gold";
+                    li.style.fontWeight = "bold";
+                }
+                list.appendChild(li);
+            });
+
+            predictionBox.innerHTML = `
+                <strong>Streak ya 1.x:</strong> ${json.prediction.low_streak} <br/>
+                <strong>Ikinini muri 10 iheruka:</strong> ${json.prediction.high_count} <br/>
+                <strong>Prediction:</strong> <span style="color:${json.prediction.probability > 70 ? 'green' : 'red'}">
+                    ${json.prediction.probability}% amahirwe yo kubona ikinini vuba
+                </span>
+            `;
+
+            drawChart(json.multipliers.map(m => parseFloat(m.replace("x", ""))));
+        }
+
+        function drawChart(data) {
+            const ctx = document.getElementById('chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => i + 1),
+                    datasets: [{
+                        label: 'Multipliers',
+                        data,
+                        borderColor: 'blue',
+                        backgroundColor: 'lightblue',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        fetchData();
+        setInterval(fetchData, 5000);
+    </script>
+</body>
+</html>
