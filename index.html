@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bertra Aviator</title>
-    <script>
-        async function fetchData() {
-            const response = await fetch("/data");
-            const data = await response.json();
-
-            // Erekana multipliers
-            document.getElementById("multipliers").innerHTML = data.multipliers.join(", ");
-
-            // Erekana predictions
-            document.getElementById("prediction").innerHTML = `
-                Low Streak: ${data.prediction.low_streak} <br>
-                High Count: ${data.prediction.high_count} <br>
-                Prediction Score: ${data.prediction.probability}%
-            `;
-        }
-
-        setInterval(fetchData, 3000); // refresh buri 3 seconds
-        window.onload = fetchData;
-    </script>
+  <title>Bertra Aviator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #222;
+    }
+    ul {
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to Bertra Aviator App</h1>
-    <p>Live multiplier predictions:</p>
+  <h1>Welcome to Bertra Aviator App</h1>
+  <p>Live multiplier predictions will appear here soon.</p>
 
-    <h2>Latest Multipliers:</h2>
-    <p id="multipliers">Loading...</p>
+  <h2>Latest Multipliers:</h2>
+  <ul>
+    {% for m in multipliers %}
+      <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
 
-    <h2>Prediction:</h2>
-    <p id="prediction">Loading...</p>
+  <h2>Prediction:</h2>
+  <ul>
+    <li>Low Streak: {{ prediction.low_streak }}</li>
+    <li>High Count: {{ prediction.high_count }}</li>
+    <li>Probability: {{ prediction.probability }}%</li>
+  </ul>
 </body>
 </html>
