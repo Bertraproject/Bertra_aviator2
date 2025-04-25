@@ -6,5 +6,15 @@
 <body>
     <h1>Welcome to Bertra Aviator App</h1>
     <p>Live multiplier predictions will appear here soon.</p>
+
+    <h2>Latest Multipliers:</h2>
+    <ul>
+        {% for m in multipliers %}
+            <li>{{ m }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Prediction:</h2>
+    <p>{{ prediction }}</p>
 </body>
 </html>
