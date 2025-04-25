@@ -1,10 +1,3 @@
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Bertra Aviator App is working!"
 from flask import Flask, jsonify, render_template
 from scraper import get_multipliers
 from predictor import calculate_prediction
